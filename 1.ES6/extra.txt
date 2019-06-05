@@ -1,0 +1,10 @@
+Extra:
+
+1. Использовать функцию как calback()
+call()
+blind() 
+apply()
+
+2. ${}
+3. setTimeout()
+4. promise - resolve() и ключевое слово then(). С помощью catch() - можно найти ошибки
