@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue</title>
+	<style>
+		li{
+			list-style-type: none;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="app">
+		<div v-if='showText' v-html='textT'	 id="text">
+			<!-- {{ text }} -->
+		</div>
+		<div v-else>Read this five sec.</div>
+		<hr>
+		<!-- С помощью  v-on: можно назначать свойства сразу в DOM элемент, например onclick: v-on:click="{{code.js}}"-->
+		<!-- директива v-on:click="showText = !showText" можно записать сокращенно @click="showText = !showText"-->
+		<!-- так же если добавить МОДИФИКАТОР(например .prevent = e.preventDefault()) 	@click.prevent="showText = !showText" то он будет выполнен прежде кода .js -->
+
+		<!-- директива v-bind:disabled="hideBtn"  можно записать сокращенно :disabled="hideBtn"  -->
+		<button 
+		ref="btn" 
+		@click.prevent="showText = !showText" 
+		:disabled="hideBtn" 
+		id="btn">
+		What's next?
+		</button>
+		
+		 <hr>
+		 <ul>
+		 	<li v-for="(item, index) in _users" v-bind:key="index">{{ item.prefix }} {{ item.name }}</li>
+		 </ul>
+	</div>
+
+
+<script src="vue.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+<script type="text/javascript">
+	const app = new Vue({
+		el: '#app',
+		data: {
+			text: 'Show begun!',
+			textT: '<p>Next read this.</p> <p>Welcome!</p>', 
+			showText: false,
+			hideBtn: true,
+			users: [
+				{
+					name: `Ivan`,
+					gender: 'male'
+				},
+				{
+					name: `Elena`,
+					gender: 'female'
+				}
+					]
+			},
+		computed: {
+			_users(){
+				return this.users.map(user =>{
+					const gender = user.gender;
+					const prefix = (gender === 'male') ? 'Mr. ' : 'Ms. ';
+					user.prefix = prefix;
+					return user;
+				})
+			}
+		},	
+		created(){
+				this.enableBtn()
+			},
+		// mounted(){
+		// 		this.btnAddClickEventHandler()
+		// 	},
+		methods: {
+			enableBtn(){
+				setTimeout(()=>{
+					app.hideBtn = false
+					// Сортировка произойдет через 2000 мсек. 
+					// app.items.sort((a,b) => b - a)
+				}, 2000)				
+			},
+
+			// т.к мы добавили v-on:click="" прямо в кнопку в DOM то можно убрать не нужный метод и ХУК ЖИЗНЕНОГО ЦИКЛА mounted(){}
+
+			// btnAddClickEventHandler(){
+
+			// 	// const btn = document.querySelector('#btn')
+
+			// 	// специальный атрибут $refs позволяет выбирать элемент DOM без .querySelector
+			// 	const btn = this.$refs.btn;
+
+			// 	btn.onclick = () => {
+			// 		app.showText = !app.showText;
+			// 	}
+			// }
+		}		
+	})
+	
+</script>	
+</body>
+</html>
